@@ -8,10 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import org.word.model.ModelAttr;
-import org.word.model.Request;
-import org.word.model.Response;
-import org.word.model.Table;
+import org.word.model.*;
 import org.word.service.WordService;
 import org.word.utils.JsonUtils;
 
@@ -36,6 +33,7 @@ public class WordServiceImpl implements WordService {
     public Map<String, Object> tableList(String swaggerUrl) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
+            Object res = restTemplate.getForObject(swaggerUrl, Object.class);
             String jsonStr = restTemplate.getForObject(swaggerUrl, String.class);
             resultMap = tableListFromString(jsonStr);
             log.debug(JsonUtils.writeJsonStr(resultMap));
@@ -43,6 +41,28 @@ public class WordServiceImpl implements WordService {
             log.error("parse error", e);
         }
         return resultMap;
+    }
+
+    @Override
+    public List<SwaggerDto> tableList(List<SwaggerDto> swaggerUrls) {
+
+        List<SwaggerDto> list = new ArrayList<>();
+
+        for (SwaggerDto dto : swaggerUrls) {
+            Map<String, Object> resultMap = new HashMap<>();
+            try {
+                String jsonStr = restTemplate.getForObject(dto.getUrl(), String.class);
+                resultMap = tableListFromString(jsonStr);
+                log.debug(JsonUtils.writeJsonStr(resultMap));
+            } catch (Exception e) {
+                log.error("parse error", e);
+            }
+
+            dto.setData(resultMap);
+            list.add(dto);
+        }
+
+        return list;
     }
 
     @Override

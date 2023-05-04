@@ -1,0 +1,52 @@
+[
+  {
+    "baseUrl":"bdg-admin",
+    "modelName": "用户中心模块接口",
+    "url": "http://192.168.12.34/bdg-api/bdg-admin/v2/api-docs"
+  },
+  {
+    "baseUrl":"bdg-assets",
+    "modelName": "数据资产模块接口",
+    "url": "http://192.168.12.34/bdg-api/bdg-assets/v2/api-docs"
+  },
+  {
+    "baseUrl":"bdg-catalog",
+    "modelName": "数据编目模块接口",
+    "url": "http://192.168.12.34/bdg-api/bdg-catalog/v2/api-docs"
+  },
+  {
+    "baseUrl":"bdg-develop",
+    "modelName": "数据管理模块接口",
+    "url": "http://192.168.12.34/bdg-api/bdg-develop/v2/api-docs"
+  },
+  {
+    "baseUrl":"bdg-metadata",
+    "modelName": "元数据模块接口",
+    "url": "http://192.168.12.34/bdg-api/bdg-metadata/v2/api-docs"
+  },
+  {
+    "baseUrl":"bdg-model",
+    "modelName": "模型管理模块接口",
+    "url": "http://192.168.12.34/bdg-api/bdg-model/v2/api-docs"
+  },
+  {
+    "baseUrl":"bdg-quality",
+    "modelName": "数据质量模块接口",
+    "url": "http://192.168.12.34/bdg-api/bdg-quality/v2/api-docs"
+  },
+  {
+    "baseUrl":"bdg-security",
+    "modelName": "数据安全模块接口",
+    "url": "http://192.168.12.34/bdg-api/bdg-security/v2/api-docs?group=数据安全"
+  },
+  {
+    "baseUrl":"bdg-service",
+    "modelName": "数据服务模块接口",
+    "url": "http://192.168.12.34/bdg-api/bdg-service/v2/api-docs"
+  },
+  {
+    "baseUrl":"bdg-standard",
+    "modelName": "数据标准模块接口",
+    "url": "http://192.168.12.34/bdg-api/bdg-standard/v2/api-docs"
+  }
+]

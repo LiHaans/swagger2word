@@ -1,7 +1,9 @@
 package org.word.service;
 
 import org.springframework.web.multipart.MultipartFile;
+import org.word.model.SwaggerDto;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -10,6 +12,8 @@ import java.util.Map;
 public interface WordService {
 
     Map<String,Object> tableList(String swaggerUrl);
+
+    List<SwaggerDto> tableList(List<SwaggerDto>swaggerUrls);
 
     Map<String, Object> tableListFromString(String jsonStr);
 

@@ -1,27 +1,30 @@
 package org.word.controller;
 
 import io.swagger.annotations.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.word.model.SwaggerDto;
 import org.word.service.WordService;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.io.*;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -64,6 +67,30 @@ public class WordController {
         writeContentToResponse(model, response);
     }
 
+
+    @ApiOperation(value = "将多个 swagger 文档一键下载为 doc 文档", notes = "")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功。")})
+    @RequestMapping(value = "/downloadWords", method = {RequestMethod.POST})
+    public void words(Model model, @ApiParam(value = "资源地址", required = false) @RequestBody List<SwaggerDto> list, HttpServletResponse response) {
+        generateModelDatas(model, list, 0);
+        writeContentsToResponse(model, response);
+    }
+
+    private void writeContentsToResponse(Model model, HttpServletResponse response) {
+        Context context = new Context();
+        context.setVariables(model.asMap());
+        String content = springTemplateEngine.process("word1", context);
+        response.setContentType("application/octet-stream;charset=utf-8");
+        response.setCharacterEncoding("utf-8");
+        try (BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream())) {
+            response.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode(fileName + ".doc", "utf-8"));
+            byte[] bytes = content.getBytes();
+            bos.write(bytes, 0, bytes.length);
+            bos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     /**
@@ -171,4 +198,14 @@ public class WordController {
         model.addAttribute("download", download);
         model.addAllAttributes(result);
     }
+
+    private void generateModelDatas(Model model, List<SwaggerDto> urls, Integer download) {
+
+        List<SwaggerDto> result = tableService.tableList(urls);
+        model.addAttribute("url", urls);
+        model.addAttribute("download", download);
+        model.addAttribute("list", result);
+    }
 }
+
+
